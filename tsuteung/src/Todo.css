@@ -9,13 +9,16 @@
 }
 .done .taskText {
     text-decoration: line-through;
-    opacity: 0.3;
+    color: red;
+    font-weight: bolder;
+    opacity: 0.4;
+    color:
 }
 .card {
     margin-bottom: 20px;
 }
 .taskBg {
-    background-color: rgb(108, 160, 228);
+    background-color: rgb(32, 182, 132);
     border-radius: 20px;
     margin-bottom: 20px;
     padding: 10px 140px 10px 15px;
@@ -46,24 +49,27 @@
     outline: none;
 }
 .taskBg .iconsWrap span:hover {
-    color: rgb(156, 102, 255);
+    color: rgb(215, 255, 104);
 }
 .mr-20 {
     margin-right: 20px;
 }
 .taskNumber {
-    color: #1cfd98;
-    border: 2px solid #1cfd98;
+    color: rgb(215, 255, 104);
+    border: 2px solid rgb(215, 255, 104);
     border-radius: 50%;
     width: 26px;
     height: 26px;
     display: flex;
     text-align: center;
     font-size: 14px;
+    font-weight: bolder;
     margin-right: 8px;
     align-items: center;
     justify-content: center;
 }
 .taskText {
     flex: 1;
+    padding-left: 1rem;
+    color: white;
 }

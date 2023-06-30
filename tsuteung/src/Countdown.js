@@ -22,11 +22,11 @@ const useStyles = createUseStyles({
         fontFamily: "Poppins, monospace",
         height: '90px',
         cursor: 'pointer',
-        border: '3px solid cornflowerblue',
+        border: '3px solid rgb(32, 182, 132)',
         borderRadius: '5px',
         transition: 'all 0.7s ease-in-out',
         margin: '0 50px', // Gap between buttons
-        color: '#000',
+        color: 'white',
         fontSize: "25px",
         zIndex: 10,
 
@@ -108,18 +108,17 @@ const useStyles = createUseStyles({
     buttonContainer: {
         display: 'flex', // Buttons in a row
         justifyContent: 'center', // Center buttons horizontally
-        marginTop: '20px', // Gap between inputs and buttons
+        marginTop: '30px', // Gap between inputs and buttons
     },
     inputFieldContainer: {
         fontFamily: "Poppins, monospace",
         display: 'flex',
         padding: "3rem",
-        gap: "10px",
         textAlign: "center",
         justifyContent: "center",
         alignItems: "center",
         boxSizing: 'border-box',
-        border: '5px solid cornflowerblue',
+        border: '5px solid rgb(32, 182, 132)',
         borderRadius: '20px',
         marginTop: "1rem",
         background: "linear-gradient(45deg, rgba(173, 216, 230, 0.2), rgba(144, 238, 144, 0.2))",
@@ -135,18 +134,18 @@ const useStyles = createUseStyles({
         width: '11vw',
         height: "11vw",
         boxSizing: 'border-box',
-        border: '5px solid cornflowerblue',
+        border: '5px solid rgb(32, 182, 132)',
         borderRadius: '15px',
         outline: 'none',
         fontSize: '70px',
         textAlign: "center",
         fontFamily: "Poppins, monospace",
-        color: "violet",
+        color: "cornflowerblue",
     },
     timeSeparator: {
         fontSize: "70px",
         fontWeight: "bolder",
-        color: "cornflowerblue",
+        color: "rgb(32, 182, 132)",
         fontFamily: "Poppins, monospace",
     },
     timerDisplay: {
@@ -158,7 +157,7 @@ const useStyles = createUseStyles({
         justifyContent: "center",
         alignItems: "center",
         boxSizing: 'border-box',
-        border: '5px solid cornflowerblue',
+        border: '5px solid rgb(32, 182, 132)',
         borderRadius: '20px',
         marginTop: "1rem",
         background: "linear-gradient(45deg, rgba(173, 216, 230, 0.2), rgba(144, 238, 144, 0.2))",
@@ -166,12 +165,12 @@ const useStyles = createUseStyles({
     timerDisplayBox: {
         width: '11vw',
         boxSizing: 'border-box',
-        border: '5px solid cornflowerblue',
+        border: '5px solid rgb(32, 182, 132)',
         borderRadius: '15px',
         fontSize: '70px',
         fontFamily: "Poppins, monospace",
         height: "11vw",
-        color: "violet",
+        color: "darkseagreen",
         textAlign: "center",
         justifyContent: "center",
         alignItems: "center",
