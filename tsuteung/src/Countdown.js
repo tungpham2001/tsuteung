@@ -16,15 +16,16 @@ const useStyles = createUseStyles({
         textDecoration: 'none',
         justifyContent: 'center',
         alignItems: 'center',
-        width: '80px',
+        width: '150px',
         fontFamily: "Poppins, monospace",
-        height: '50px',
+        height: '90px',
         cursor: 'pointer',
         border: '3px solid cornflowerblue',
         borderRadius: '5px',
         transition: 'all 0.7s ease-in-out',
-        margin: '0 20px', // Gap between buttons
+        margin: '0 50px', // Gap between buttons
         color: '#000',
+        fontSize: "25px",
         zIndex: 10,
 
         '&:hover, &:focus': {
@@ -108,31 +109,72 @@ const useStyles = createUseStyles({
         marginTop: '20px', // Gap between inputs and buttons
     },
     inputFieldContainer: {
-        padding: "3rem",
+        fontFamily: "Poppins, monospace",
         display: 'flex',
-        gap: "30px",
-        border: "5px solid cornflowerblue",
-        borderRadius: "30px",
+        padding: "3rem",
+        gap: "10px",
+        textAlign: "center",
+        justifyContent: "center",
+        alignItems: "center",
+        boxSizing: 'border-box',
+        border: '5px solid cornflowerblue',
+        borderRadius: '20px',
+        marginTop: "1rem",
         background: "linear-gradient(45deg, rgba(173, 216, 230, 0.2), rgba(144, 238, 144, 0.2))",
     },
     inputField: {
         flex: '1',
-        margin: '0 5px',
+        margin: '0 10px',
         position: 'relative',
+        justifyContent: "center",
+        alignItems: "center",
     },
     inputFieldInput: {
-        width: '100%',
-        height: '105px',
-        padding: '5px',
+        width: '11vw',
+        height: "11vw",
         boxSizing: 'border-box',
-        border: '3px solid cornflowerblue',
-        borderRadius: '5px',
+        border: '5px solid cornflowerblue',
+        borderRadius: '15px',
         outline: 'none',
+        fontSize: '70px',
+        textAlign: "center",
+        fontFamily: "Poppins, monospace",
+        color: "violet",
     },
     timeSeparator: {
-        fontSize: "28px",
+        fontSize: "70px",
         fontWeight: "bolder",
         color: "cornflowerblue",
+        fontFamily: "Poppins, monospace",
+    },
+    timerDisplay: {
+        fontFamily: "Poppins, monospace",
+        display: 'flex',
+        padding: "3rem",
+        gap: "10px",
+        textAlign: "center",
+        justifyContent: "center",
+        alignItems: "center",
+        boxSizing: 'border-box',
+        border: '5px solid cornflowerblue',
+        borderRadius: '20px',
+        marginTop: "1rem",
+        background: "linear-gradient(45deg, rgba(173, 216, 230, 0.2), rgba(144, 238, 144, 0.2))",
+    },
+    timerDisplayBox: {
+        width: '11vw',
+        boxSizing: 'border-box',
+        border: '5px solid cornflowerblue',
+        borderRadius: '15px',
+        fontSize: '70px',
+        fontFamily: "Poppins, monospace",
+        height: "11vw",
+        color: "violet",
+        textAlign: "center",
+        justifyContent: "center",
+        alignItems: "center",
+        display: "flex",
+        background: "white",
     },
 });
 
@@ -205,6 +247,10 @@ function Countdown() {
         }));
     };
 
+    const handleInputClick = (e) => {
+        e.target.select();
+    };
+
     return (
         <div className={classes.container}>
             {showInputs && (
@@ -213,9 +259,11 @@ function Countdown() {
                         <input
                             type="number"
                             name="hours"
-                            value={countdownTime.hours || ''}
+                            value={countdownTime.hours || '00'}
                             className={classes.inputFieldInput}
                             onChange={handleInputChange}
+                            onClick={handleInputClick}
+                            placeholder="hr"
                             min="0"
                         />
                     </div>
@@ -224,9 +272,11 @@ function Countdown() {
                         <input
                             type="number"
                             name="minutes"
-                            value={countdownTime.minutes || ''}
+                            value={countdownTime.minutes || '00'}
                             className={classes.inputFieldInput}
                             onChange={handleInputChange}
+                            onClick={handleInputClick}
+                            placeholder="min"
                             min="0"
                             max="59"
                         />
@@ -236,28 +286,38 @@ function Countdown() {
                         <input
                             type="number"
                             name="seconds"
-                            value={countdownTime.seconds || ''}
+                            value={countdownTime.seconds || '00'}
                             className={classes.inputFieldInput}
+                            onClick={handleInputClick}
                             onChange={handleInputChange}
+                            placeholder="sec"
                             min="0"
                             max="59"
                         />
                     </div>
                 </div>
             )}
+            <div className={classes.timerDisplay}>
+                <div className={classes.timerDisplayBox}>
+                    {countdownTime.hours.toString().padStart(2, '0')}
+                </div>
+                <h2 className={classes.timeSeparator}>:</h2>
+                <div className={classes.timerDisplayBox}>
+                    {countdownTime.minutes.toString().padStart(2, '0')}
+                </div>
+                <h2 className={classes.timeSeparator}>:</h2>
+                <div className={classes.timerDisplayBox}>
+                    {countdownTime.seconds.toString().padStart(2, '0')}
+                </div>
+            </div>
             <div className={classes.buttonContainer}>
-                <button className= {classes.timerButton} onClick={startCountdown} disabled={timerActive || !showInputs}>
-                START
+                <button 
+                    className= {classes.timerButton} 
+                    onClick={startCountdown} 
+                    disabled={timerActive || !showInputs}>START
                 </button>
                 <button className= {classes.timerButton} onClick={stopCountdown}>STOP</button>
                 <button className= {classes.timerButton} onClick={resetCountdown}>RESET</button>
-            </div>
-            <div>
-                <h2>
-                {countdownTime.hours.toString().padStart(2, '0')}:
-                {countdownTime.minutes.toString().padStart(2, '0')}:
-                {countdownTime.seconds.toString().padStart(2, '0')}
-                </h2>
             </div>
         </div>
     );
