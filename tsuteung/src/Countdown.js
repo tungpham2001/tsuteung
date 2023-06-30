@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createUseStyles } from 'react-jss';
+import Spritesheet from "react-responsive-spritesheet";
 
 const useStyles = createUseStyles({
     container: {
@@ -8,6 +9,7 @@ const useStyles = createUseStyles({
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
+        paddingLeft: "1rem",
     },
     timerButton: {
         display: 'flex',
@@ -176,6 +178,18 @@ const useStyles = createUseStyles({
         display: "flex",
         background: "white",
     },
+    spriteBox: {
+        flex: '1',
+        display: 'flex',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        width: '25%',
+        height: '100%',
+    },
+    sprite: {
+        width: "10vw",
+        height: "10vw",
+    },
 });
 
 function Countdown() {
@@ -236,6 +250,8 @@ function Countdown() {
         let parsedValue = parseInt(value, 10);
         if (isNaN(parsedValue) || parsedValue < 0) {
             parsedValue = 0;
+        } else if (name === 'hours' && parsedValue > 999) {
+            parsedValue = 999;
         } else if (name === 'minutes' && parsedValue > 59) {
             parsedValue = 59;
         } else if (name === 'seconds' && parsedValue > 59) {
@@ -259,12 +275,13 @@ function Countdown() {
                         <input
                             type="number"
                             name="hours"
-                            value={countdownTime.hours || '00'}
+                            value={countdownTime.hours.toString().padStart(2, '0')}
                             className={classes.inputFieldInput}
                             onChange={handleInputChange}
                             onClick={handleInputClick}
                             placeholder="hr"
                             min="0"
+                            max="100"
                         />
                     </div>
                     <p className={classes.timeSeparator}>:</p>
@@ -272,7 +289,7 @@ function Countdown() {
                         <input
                             type="number"
                             name="minutes"
-                            value={countdownTime.minutes || '00'}
+                            value={countdownTime.minutes.toString().padStart(2, '0')}
                             className={classes.inputFieldInput}
                             onChange={handleInputChange}
                             onClick={handleInputClick}
@@ -286,7 +303,7 @@ function Countdown() {
                         <input
                             type="number"
                             name="seconds"
-                            value={countdownTime.seconds || '00'}
+                            value={countdownTime.seconds.toString().padStart(2, '0')}
                             className={classes.inputFieldInput}
                             onClick={handleInputClick}
                             onChange={handleInputChange}
@@ -297,19 +314,21 @@ function Countdown() {
                     </div>
                 </div>
             )}
-            <div className={classes.timerDisplay}>
-                <div className={classes.timerDisplayBox}>
-                    {countdownTime.hours.toString().padStart(2, '0')}
+            {timerActive && (
+                <div className={classes.timerDisplay}>
+                    <div className={classes.timerDisplayBox}>
+                        {countdownTime.hours.toString().padStart(2, '0')}
+                    </div>
+                    <h2 className={classes.timeSeparator}>:</h2>
+                    <div className={classes.timerDisplayBox}>
+                        {countdownTime.minutes.toString().padStart(2, '0')}
+                    </div>
+                    <h2 className={classes.timeSeparator}>:</h2>
+                    <div className={classes.timerDisplayBox}>
+                        {countdownTime.seconds.toString().padStart(2, '0')}
+                    </div>
                 </div>
-                <h2 className={classes.timeSeparator}>:</h2>
-                <div className={classes.timerDisplayBox}>
-                    {countdownTime.minutes.toString().padStart(2, '0')}
-                </div>
-                <h2 className={classes.timeSeparator}>:</h2>
-                <div className={classes.timerDisplayBox}>
-                    {countdownTime.seconds.toString().padStart(2, '0')}
-                </div>
-            </div>
+            )}
             <div className={classes.buttonContainer}>
                 <button 
                     className= {classes.timerButton} 
@@ -319,6 +338,20 @@ function Countdown() {
                 <button className= {classes.timerButton} onClick={stopCountdown}>STOP</button>
                 <button className= {classes.timerButton} onClick={resetCountdown}>RESET</button>
             </div>
+            {timerActive && (
+                <div className={classes.spriteBox}>
+                    <Spritesheet
+                        className={classes.sprite}
+                        image={`https://raw.githubusercontent.com/danilosetra/react-responsive-spritesheet/master/assets/images/examples/sprite-image-horizontal.png`}
+                        widthFrame={420}
+                        heightFrame={500}
+                        steps={14}
+                        fps={10}
+                        autoplay={true}
+                        loop={true}
+                    />
+                </div>
+            )}
         </div>
     );
 }
