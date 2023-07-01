@@ -5,7 +5,7 @@ import Countdown from "./Countdown";
 import Todo from "./Todo";
 import RingLoader from "react-spinners/RingLoader";
 
-const titles = ["tsuteung", "츠트웅", "pomodoro study buddy"]; // Array of different titles
+const titles = ["tsuteung", "수똥", "pomodoro study buddy"]; // Array of different titles
 
 const useStyles = createUseStyles({
   app: {
