@@ -3,7 +3,7 @@ import "./App.css";
 import { createUseStyles } from "react-jss";
 import Countdown from "./Countdown";
 import Todo from "./Todo";
-import CircleLoader from "react-spinners/CircleLoader";
+import RingLoader from "react-spinners/RingLoader";
 
 const titles = ["tsuteung", "츠트웅", "pomodoro study buddy"]; // Array of different titles
 
@@ -60,7 +60,7 @@ const useStyles = createUseStyles({
     width: "100%",
     height: "100%",
     backgroundColor: "#F7F7F7",
-    animation: "$fade-out 3s",
+    animation: "$fade-out 5s",
     zIndex: 2,
   },
   content: {
@@ -109,7 +109,7 @@ function App() {
     <div className={classes.app}>
       {loading ? (
         <div className={classes.loadScreen}>
-          <CircleLoader size={500} color="lightgreen" speedMultiplier={0.5} />
+          <RingLoader size={500} color="lightgreen" speedMultiplier={0.5} />
         </div>
       ) : (
         <div className={classes.content}>
