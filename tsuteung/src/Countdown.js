@@ -189,6 +189,30 @@ const useStyles = createUseStyles({
         width: "10vw",
         height: "10vw",
     },
+    cheerText: {
+        color: "lightblue",
+        fontFamily: "Krub",
+        fontSize: "30px",
+        fontWeight: "bolder",
+        lineHeight: "48px",
+        padding: "2rem",
+        textAlign: "center",
+        animation: "$pulse 5s infinite",
+    },
+    "@keyframes pulse": {
+        "0%": {
+          opacity: 0.5,
+          transform: "scale(1)",
+        },
+        "50%": {
+          opacity: 1,
+          transform: "scale(1.1)",
+        },
+        "100%": {
+          opacity: 0.5,
+          transform: "scale(1)",
+        },
+    },
 });
 
 function Countdown() {
@@ -201,6 +225,16 @@ function Countdown() {
 
     const [timerActive, setTimerActive] = useState(false);
     const [showInputs, setShowInputs] = useState(true);
+
+    const cheers = [
+        "harness the power of focus and watch your dreams come true",
+        "stay in the zone and unlock your full potential",
+        "let your determination drive your concentration",
+        "stay hydrated",
+        "tsuteung loves u <3",
+        "keep up the good work",
+        "remember to take a break once in a while!!",
+    ]; // Array of different cheers
 
     useEffect(() => {
         let interval = null;
@@ -227,6 +261,19 @@ function Countdown() {
         }
         return () => clearInterval(interval);
     }, [timerActive]);
+
+    const [currentCheerIndex, setCurrentCheerIndex] = useState(0);
+
+    useEffect(() => {
+        const cheerCount = cheers.length;
+        const timeoutDuration = 9000; // Adjust the duration as needed (in milliseconds)
+
+        const timer = setTimeout(() => {
+        setCurrentCheerIndex((prevIndex) => (prevIndex + 1) % cheerCount);
+        }, timeoutDuration);
+
+        return () => clearTimeout(timer);
+    }, [currentCheerIndex]);
 
     const startCountdown = () => {
         setTimerActive(true);
@@ -349,6 +396,11 @@ function Countdown() {
                         autoplay={true}
                         loop={true}
                     />
+                </div>
+            )}
+            {timerActive && (
+                <div className={classes.cheerText}>
+                    {cheers[currentCheerIndex]}
                 </div>
             )}
         </div>
