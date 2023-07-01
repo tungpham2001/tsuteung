@@ -2,6 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { createUseStyles } from 'react-jss';
 import Spritesheet from "react-responsive-spritesheet";
 
+const cheers = [
+    "harness the power of focus and watch your dreams come true",
+    "stay in the zone and unlock your full potential",
+    "let your determination drive your concentration",
+    "stay hydrated",
+    "tsuteung loves u <3",
+    "keep up the good work",
+    "remember to take a break once in a while!!",
+]; // Array of different cheers
+
 const useStyles = createUseStyles({
     container: {
         paddingTop: "1rem",
@@ -34,6 +44,7 @@ const useStyles = createUseStyles({
             color: '#000',
             fontWeight: "bolder",
             opacity: 1,
+            transform: "scale(1.1)",
 
             '&:before': {
                 width: '100%',
@@ -225,16 +236,6 @@ function Countdown() {
 
     const [timerActive, setTimerActive] = useState(false);
     const [showInputs, setShowInputs] = useState(true);
-
-    const cheers = [
-        "harness the power of focus and watch your dreams come true",
-        "stay in the zone and unlock your full potential",
-        "let your determination drive your concentration",
-        "stay hydrated",
-        "tsuteung loves u <3",
-        "keep up the good work",
-        "remember to take a break once in a while!!",
-    ]; // Array of different cheers
 
     useEffect(() => {
         let interval = null;
