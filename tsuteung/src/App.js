@@ -8,8 +8,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import DayNightToggle from 'react-day-and-night-toggle';
 import { ChromePicker } from 'react-color';
+import ButtonClickSound from "./sound/buttonSound1.mp3";
 
 const titles = ["tsuteung", "수똥", "pomodoro study buddy"]; // Array of different titles
+
+const audio = new Audio(ButtonClickSound);
 
 const useStyles = createUseStyles({
   app: {
@@ -105,10 +108,25 @@ const useStyles = createUseStyles({
     borderRadius: "20px",
     background: "#A3C1AD",
     width: "40%",
+    scrollbarColor: "yellow red",
+    overflow: "visible",
   },
   scrollable: {
     overflow: 'auto',
-    height: '500px', // Adjust the height as per your requirements
+    height: '30vw', // Adjust the height as per your requirements
+    "&::-webkit-scrollbar": {
+      width: "10px", // Adjust the width of the scrollbar
+    },
+    "&::-webkit-scrollbar-track": {
+      overflow: "fit",
+      borderRadius: "100px",
+      marginTop: "0.5rem",
+      marginBottom: "0.5rem",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      background: "aliceblue", // Change the color of the scrollbar thumb
+      borderRadius: "4px", // Adjust the border radius of the scrollbar thumb
+    },
   },
   settingButtonContainer: {
     fontFamily: "Krub",
@@ -187,6 +205,52 @@ const useStyles = createUseStyles({
     marginLeft: "5vw",
     marginTop: "1vw",
   },
+  sfx: {
+    display: "flex",
+    alignItems: "center",
+  },
+  sfxText: {
+    marginRight: "13.9vw",
+  },
+  sfxToggleWrapper: {
+    marginLeft: "13.9vw",
+    marginTop: "1vw",
+  },
+  sfxToggle: {
+    marginTop: "1rem",
+    marginBottom: "2rem",
+    padding: "0.6rem",
+    borderRadius: "10px",
+    border: "3px solid rgb(32, 182, 132)",
+    fontSize: "1rem",
+    lineHeight: "1.5",
+  },
+  disableSound: {
+    backgroundColor: 'green',
+    color: 'white',
+    "&:hover": {
+      background: "darkgreen",
+    },
+    
+  },
+  enableSound: {
+    backgroundColor: 'black',
+    color: 'white',
+    "&:hover": {
+      background: "grey",
+    },
+  },
+  alarm: {
+    display: "flex",
+    alignItems: "center",
+  },
+  alarmText: {
+    marginRight: "12.1vw",
+  },
+  alarmToggleWrapper: {
+    marginLeft: "12.1vw",
+    marginTop: "1vw",
+  },
 });
 
 function App() {
@@ -196,16 +260,27 @@ function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState("");
+  const [isSoundEnabled, setIsSoundEnabled] = useState(true);
+
+  const handleSoundToggle = () => {
+    setIsSoundEnabled(!isSoundEnabled);
+  };
 
   const handleColorChange = (color) => {
     setBackgroundColor(color.hex);
   };
 
   const openSettings = () => {
+    if (isSoundEnabled) {
+      audio.play();
+    }
     setIsSettingsOpen(true);
   };
 
   const closeSettings = () => {
+    if (isSoundEnabled) {
+      audio.play();
+    }
     setIsSettingsOpen(false);
   };
 
@@ -270,14 +345,16 @@ function App() {
               handleDarkModeToggle={handleDarkModeToggle}
               backgroundColor={backgroundColor}
               handleColorChange={handleColorChange}
+              handleSoundToggle={handleSoundToggle}
+              isSoundEnabled={isSoundEnabled}
             />
           )}
           <div className={classes.gridContainer}>
             <div className={classes.countdownBox}>
-              <Countdown />
+              <Countdown isSoundEnabled={isSoundEnabled}/>
             </div>
             <div className={classes.todoBox}>
-              <Todo />
+              <Todo isSoundEnabled={isSoundEnabled}/>
             </div>
           </div>
         </div>
@@ -286,7 +363,7 @@ function App() {
   );
 }
 
-function SettingsPage({ onClose, handleDarkModeToggle, backgroundColor, handleColorChange }) {
+function SettingsPage({ onClose, handleDarkModeToggle, backgroundColor, handleColorChange, handleSoundToggle, isSoundEnabled }) {
   const classes = useStyles();
   const [isDarkMode, setIsDarkMode] = useState(false);
 
@@ -332,8 +409,32 @@ function SettingsPage({ onClose, handleDarkModeToggle, backgroundColor, handleCo
       </div>
       <div className={classes.settingSFX}>
         <h1 className={classes.settingType}>SFX and Effects</h1>
-        <p>alarm sound</p>
-        <p>enable sfx</p>
+        <div className={classes.alarm}>
+          <div className={classes.alarmText}>
+            timer alert
+          </div>
+          <div className={classes.alarmToggleWrapper}>
+            {/* <button 
+              className={`${classes.sfxToggle} ${isSoundEnabled ? classes.disableSound : classes.enableSound}`}
+              onClick={handleSoundToggle}
+            >
+              {isSoundEnabled ? 'enabled' : 'disabled'}
+            </button> */}
+          </div>
+        </div>
+        <div className={classes.sfx}>
+          <div className={classes.sfxText}>
+            sfx
+          </div>
+          <div className={classes.sfxToggleWrapper}>
+            <button 
+              className={`${classes.sfxToggle} ${isSoundEnabled ? classes.disableSound : classes.enableSound}`}
+              onClick={handleSoundToggle}
+            >
+              {isSoundEnabled ? 'enabled' : 'disabled'}
+            </button>
+          </div>
+        </div>
         <p>background music during countdown</p>
       </div>
       <div className={classes.settingCloseButtonContainer}>

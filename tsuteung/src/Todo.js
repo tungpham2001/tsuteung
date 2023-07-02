@@ -5,6 +5,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import "./Todo.css"
 import "bootstrap/dist/css/bootstrap.min.css";
+import ButtonClickSound from "./sound/buttonSound3.mp3";
 
 function Todo() {
     // Tasks (ToDo List) State
@@ -14,9 +15,12 @@ function Todo() {
   const [newTask, setNewTask] = useState('');
   const [updateData, setUpdateData] = useState('');
 
+  const audio = new Audio(ButtonClickSound);
+
   // Add task 
   ////////////////////////////////////////// 
   const addTask = () => {
+    audio.play();
     if(newTask) {
       let num = toDo.length + 1; 
       let newEntry = {id: num, title: newTask, status: false}
@@ -28,6 +32,7 @@ function Todo() {
   // Delete task 
   ////////////////////////////////////////// 
   const deleteTask = (id) => {
+    audio.play();
     let newTasks = toDo.filter((task) => task.id !== id);
     setToDo(newTasks);
   }
@@ -35,6 +40,7 @@ function Todo() {
   // mark task as done or completed
   ////////////////////////////////////////// 
   const markDone = (id) => {
+    audio.play();
     const newTasks = toDo.map((task) => {
       if (task.id === id){
         return ({ ...task, status: !task.status })
@@ -47,12 +53,14 @@ function Todo() {
   // cancel update
   ////////////////////////////////////////// 
   const cancelUpdate = () => {
+    audio.play();
     setUpdateData('');
   }
 
   // Change task for update
   ////////////////////////////////////////// 
   const changeTask = (e) => {
+    //audio.play();
     let newEntry = {
       id: updateData.id,
       title: e.target.value,
@@ -64,6 +72,7 @@ function Todo() {
   // update task 
   ////////////////////////////////////////// 
   const updateTask = () => {
+    audio.play();
     let filterRecords = [...toDo].filter( task=>task.id !== updateData.id);
     let updatedObject = [...filterRecords, updateData];
     setToDo(updatedObject);
@@ -150,7 +159,15 @@ function Todo() {
                 {task.status ? null : (
                   <span 
                     title="edit"
-                    onClick={ () => setUpdateData({ id: task.id, title: task.title, satus: task.status ? true : false }) }
+                    // onClick={ () => {setUpdateData({ id: task.id, title: task.title, satus: task.status ? true : false }) }}
+                    onClick={() => {
+                      audio.play();
+                      setUpdateData({
+                        id: task.id,
+                        title: task.title,
+                        status: task.status ? true : false,
+                      });
+                    }}
                   >
                     <FontAwesomeIcon icon={faPen} />
                   </span>
