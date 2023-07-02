@@ -7,7 +7,7 @@ import "./Todo.css"
 import "bootstrap/dist/css/bootstrap.min.css";
 import ButtonClickSound from "./sound/buttonSound3.mp3";
 
-function Todo() {
+function Todo(props) {
     // Tasks (ToDo List) State
   const [toDo, setToDo] = useState([]);
 
@@ -17,10 +17,14 @@ function Todo() {
 
   const audio = new Audio(ButtonClickSound);
 
+  const { isSoundEnabled } = props;
+
   // Add task 
   ////////////////////////////////////////// 
   const addTask = () => {
-    audio.play();
+    if (isSoundEnabled) {
+      audio.play();
+    }
     if(newTask) {
       let num = toDo.length + 1; 
       let newEntry = {id: num, title: newTask, status: false}
@@ -32,7 +36,9 @@ function Todo() {
   // Delete task 
   ////////////////////////////////////////// 
   const deleteTask = (id) => {
-    audio.play();
+    if (isSoundEnabled) {
+      audio.play();
+    }
     let newTasks = toDo.filter((task) => task.id !== id);
     setToDo(newTasks);
   }
@@ -40,7 +46,9 @@ function Todo() {
   // mark task as done or completed
   ////////////////////////////////////////// 
   const markDone = (id) => {
-    audio.play();
+    if (isSoundEnabled) {
+      audio.play();
+    }
     const newTasks = toDo.map((task) => {
       if (task.id === id){
         return ({ ...task, status: !task.status })
@@ -53,14 +61,18 @@ function Todo() {
   // cancel update
   ////////////////////////////////////////// 
   const cancelUpdate = () => {
-    audio.play();
+    if (isSoundEnabled) {
+      audio.play();
+    }
     setUpdateData('');
   }
 
   // Change task for update
   ////////////////////////////////////////// 
   const changeTask = (e) => {
-    //audio.play();
+    if (isSoundEnabled) {
+      audio.play();
+    }
     let newEntry = {
       id: updateData.id,
       title: e.target.value,
@@ -72,7 +84,9 @@ function Todo() {
   // update task 
   ////////////////////////////////////////// 
   const updateTask = () => {
-    audio.play();
+    if (isSoundEnabled) {
+      audio.play();
+    }
     let filterRecords = [...toDo].filter( task=>task.id !== updateData.id);
     let updatedObject = [...filterRecords, updateData];
     setToDo(updatedObject);
@@ -161,7 +175,9 @@ function Todo() {
                     title="edit"
                     // onClick={ () => {setUpdateData({ id: task.id, title: task.title, satus: task.status ? true : false }) }}
                     onClick={() => {
-                      audio.play();
+                      if (isSoundEnabled) {
+                        audio.play();
+                      }
                       setUpdateData({
                         id: task.id,
                         title: task.title,
