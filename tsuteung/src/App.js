@@ -106,6 +106,10 @@ const useStyles = createUseStyles({
     background: "#A3C1AD",
     width: "40%",
   },
+  scrollable: {
+    overflow: 'auto',
+    height: '500px', // Adjust the height as per your requirements
+  },
   settingButtonContainer: {
     fontFamily: "Krub",
     cursor: "pointer",
@@ -127,6 +131,8 @@ const useStyles = createUseStyles({
   },
   settingTheme: {
     textAlign: "left",
+    marginBottom: "5vw",
+    paddingTop: "20rem",
   },
   settingSFX: {
     textAlign: "left",
@@ -149,6 +155,7 @@ const useStyles = createUseStyles({
       transform: "scale(1.2)",
       background: "#EEDC82",
     },
+    marginRight: "0.5vw",
   },
   settingType: {
     color: "lightgoldenrodyellow",
@@ -166,6 +173,18 @@ const useStyles = createUseStyles({
   },
   darkModeToggleWrapper: {
     marginLeft: "3.1vw",
+    marginTop: "1vw",
+  },
+  toggleBackgroundColor: {
+    display: "flex",
+    alignItems: "center",
+    marginTop: "2vw",
+  },
+  toggleBackgroundColorText: {
+    marginRight: "5vw",
+  },
+  toggleBackgroundColorWrapper: {
+    marginLeft: "5vw",
     marginTop: "1vw",
   },
 });
@@ -214,7 +233,7 @@ function App() {
 
   const handleDarkModeToggle = () => {
     setDarkMode(!darkMode);
-    const newBackgroundColor = darkMode ? "" : "black";
+    const newBackgroundColor = darkMode ? "" : "#343434";
     setBackgroundColor(newBackgroundColor);
     document.body.style.backgroundColor = newBackgroundColor;
   };
@@ -267,12 +286,12 @@ function App() {
   );
 }
 
-function SettingsPage({ onClose, darkMode, handleDarkModeToggle, backgroundColor, handleColorChange }) {
+function SettingsPage({ onClose, handleDarkModeToggle, backgroundColor, handleColorChange }) {
   const classes = useStyles();
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   return (
-    <div className={classes.settingContainer}>
+    <div className={`${classes.settingContainer} ${classes.scrollable}`}>
       <div className={classes.settingTheme}>
         <h1 className={classes.settingType}>Theme</h1>
         <div className={classes.darkMode}>
@@ -299,11 +318,17 @@ function SettingsPage({ onClose, darkMode, handleDarkModeToggle, backgroundColor
             {darkMode ? "switch to light mode" : "switch to dark mode"}
           </ToggleButton> */}
         </div>
-        <p>
-          change background color
-          <ChromePicker color={backgroundColor} onChange={handleColorChange} />
-        </p>
-        <p>change font</p>
+        <div className={classes.toggleBackgroundColor}>
+          <div className={classes.toggleBackgroundColorText}>
+            change background color
+          </div>
+          <div className={classes.toggleBackgroundColorWrapper}>
+            <ChromePicker 
+              color={backgroundColor} 
+              onChange={handleColorChange}
+            />
+          </div>
+        </div>
       </div>
       <div className={classes.settingSFX}>
         <h1 className={classes.settingType}>SFX and Effects</h1>
