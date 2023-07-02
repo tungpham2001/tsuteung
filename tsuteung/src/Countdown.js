@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createUseStyles } from 'react-jss';
 import Spritesheet from "react-responsive-spritesheet";
 import ButtonClickSound from "./sound/buttonSound2.mp3";
+import AlertSound from "./sound/alertSound.mp3";
 
 const cheers = [
     "harness the power of focus and watch your dreams come true",
@@ -237,7 +238,12 @@ function Countdown(props) {
 
     const [timerActive, setTimerActive] = useState(false);
     const [showInputs, setShowInputs] = useState(true);
-    const { isSoundEnabled } = props;
+    const { isSoundEnabled, isAlarmEnabled } = props;
+
+    const playAlertSound = () => {
+        const alert = new Audio(AlertSound);
+        alert.play();
+    };
 
     useEffect(() => {
         let interval = null;
@@ -246,6 +252,9 @@ function Countdown(props) {
                 setCountdownTime((prevTime) => {
                 const { hours, minutes, seconds } = prevTime;
                 if (hours === 0 && minutes === 0 && seconds === 0) {
+                    if (isAlarmEnabled) {
+                        playAlertSound();
+                    }
                     clearInterval(interval);
                     setTimerActive(false);
                     setShowInputs(true);
@@ -263,7 +272,7 @@ function Countdown(props) {
         }, 1000);
         }
         return () => clearInterval(interval);
-    }, [timerActive]);
+    }, [timerActive, isAlarmEnabled]);
 
     const [currentCheerIndex, setCurrentCheerIndex] = useState(0);
 

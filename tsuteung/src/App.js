@@ -261,9 +261,14 @@ function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState("");
   const [isSoundEnabled, setIsSoundEnabled] = useState(true);
+  const [isAlarmEnabled, setIsAlarmEnabled] = useState(true);
 
   const handleSoundToggle = () => {
     setIsSoundEnabled(!isSoundEnabled);
+  };
+
+  const handleAlarmToggle = () => {
+    setIsAlarmEnabled(!isAlarmEnabled);
   };
 
   const handleColorChange = (color) => {
@@ -346,12 +351,14 @@ function App() {
               backgroundColor={backgroundColor}
               handleColorChange={handleColorChange}
               handleSoundToggle={handleSoundToggle}
+              handleAlarmToggle={handleAlarmToggle}
               isSoundEnabled={isSoundEnabled}
+              isAlarmEnabled={isAlarmEnabled}
             />
           )}
           <div className={classes.gridContainer}>
             <div className={classes.countdownBox}>
-              <Countdown isSoundEnabled={isSoundEnabled}/>
+              <Countdown isSoundEnabled={isSoundEnabled} isAlarmEnabled={isAlarmEnabled}/>
             </div>
             <div className={classes.todoBox}>
               <Todo isSoundEnabled={isSoundEnabled}/>
@@ -363,7 +370,7 @@ function App() {
   );
 }
 
-function SettingsPage({ onClose, handleDarkModeToggle, backgroundColor, handleColorChange, handleSoundToggle, isSoundEnabled }) {
+function SettingsPage({ onClose, handleDarkModeToggle, backgroundColor, handleColorChange, handleSoundToggle, isSoundEnabled, isAlarmEnabled, handleAlarmToggle }) {
   const classes = useStyles();
   const [isDarkMode, setIsDarkMode] = useState(false);
 
@@ -414,12 +421,12 @@ function SettingsPage({ onClose, handleDarkModeToggle, backgroundColor, handleCo
             timer alert
           </div>
           <div className={classes.alarmToggleWrapper}>
-            {/* <button 
-              className={`${classes.sfxToggle} ${isSoundEnabled ? classes.disableSound : classes.enableSound}`}
-              onClick={handleSoundToggle}
+            <button 
+              className={`${classes.sfxToggle} ${isAlarmEnabled ? classes.disableSound : classes.enableSound}`}
+              onClick={handleAlarmToggle}
             >
-              {isSoundEnabled ? 'enabled' : 'disabled'}
-            </button> */}
+              {isAlarmEnabled ? 'enabled' : 'disabled'}
+            </button>
           </div>
         </div>
         <div className={classes.sfx}>
