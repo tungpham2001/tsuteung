@@ -4,32 +4,32 @@ import { createUseStyles } from "react-jss";
 import Countdown from "./Countdown";
 import Todo from "./Todo";
 import RingLoader from "react-spinners/RingLoader";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGear, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
-import { ToggleButton } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGear, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import DayNightToggle from 'react-day-and-night-toggle';
+import { ChromePicker } from 'react-color';
 
 const titles = ["tsuteung", "수똥", "pomodoro study buddy"]; // Array of different titles
 
 const useStyles = createUseStyles({
   app: {
     background: "aliceblue",
+    transition: "background-color 2s ease, color 2s ease",
   },
   appDarkMode: {
-    background: "black",
+    background: "#343434",
     color: "white",
   },
   countdownBox: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    //justifyContent: "center",
     height: "100vh",
   },
   gridContainer: {
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
     gridGap: "20px",
-    // Add any other styles for the grid container
   },
   title: {
     color: "#CEF0D4",
@@ -104,7 +104,7 @@ const useStyles = createUseStyles({
     border: "5px solid rgb(32, 182, 132)",
     borderRadius: "20px",
     background: "#A3C1AD",
-
+    width: "40%",
   },
   settingButtonContainer: {
     fontFamily: "Krub",
@@ -115,7 +115,7 @@ const useStyles = createUseStyles({
     padding: "0.6rem",
     borderRadius: "10px",
     border: "3px solid rgb(32, 182, 132)",
-	  fontSize: "1rem",
+    fontSize: "1rem",
     lineHeight: "1.5",
     background: "lightyellow",
     color: "rgb(32, 182, 132)",
@@ -123,7 +123,7 @@ const useStyles = createUseStyles({
     "&:hover": {
       transform: "scale(1.2)",
       background: "#EEDC82",
-  },
+    },
   },
   settingTheme: {
     textAlign: "left",
@@ -132,15 +132,15 @@ const useStyles = createUseStyles({
     textAlign: "left",
   },
   settingCloseButtonContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
   settingCloseButton: {
     padding: "0.6rem",
     borderRadius: "10px",
     border: "3px solid rgb(32, 182, 132)",
-	  fontSize: "1rem",
+    fontSize: "1rem",
     lineHeight: "1.5",
     background: "lightyellow",
     color: "rgb(32, 182, 132)",
@@ -153,8 +153,20 @@ const useStyles = createUseStyles({
   settingType: {
     color: "lightgoldenrodyellow",
   },
+  darkModeToggle: {
+    marginTop: "1rem",
+    marginBottom: "2rem",
+  },
   darkMode: {
-    
+    display: "flex",
+    alignItems: "center",
+  },
+  darkModeText: {
+    marginRight: "3.1vw",
+  },
+  darkModeToggleWrapper: {
+    marginLeft: "3.1vw",
+    marginTop: "1vw",
   },
 });
 
@@ -163,12 +175,19 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [currentTitleIndex, setCurrentTitleIndex] = useState(0);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const [backgroundColor, setBackgroundColor] = useState("");
+
+  const handleColorChange = (color) => {
+    setBackgroundColor(color.hex);
+  };
 
   const openSettings = () => {
-      setIsSettingsOpen(true);
+    setIsSettingsOpen(true);
   };
+
   const closeSettings = () => {
-      setIsSettingsOpen(false);
+    setIsSettingsOpen(false);
   };
 
   useEffect(() => {
@@ -180,10 +199,28 @@ function App() {
     }, timeoutDuration);
 
     return () => clearTimeout(timer);
-  }, [currentTitleIndex]); // Add currentTitleIndex as a dependency
+  }, [currentTitleIndex]);
+
+  useEffect(() => {
+    const appElement = document.querySelector("." + classes.app);
+    if (appElement) {
+      if (darkMode) {
+        appElement.classList.add(classes.appDarkMode);
+      } else {
+        appElement.classList.remove(classes.appDarkMode);
+      }
+    }
+  }, [darkMode, classes.app, classes.appDarkMode]);
+
+  const handleDarkModeToggle = () => {
+    setDarkMode(!darkMode);
+    const newBackgroundColor = darkMode ? "" : "black";
+    setBackgroundColor(newBackgroundColor);
+    document.body.style.backgroundColor = newBackgroundColor;
+  };
 
   return (
-    <div className={classes.app}>
+    <div className={classes.app} style={{ backgroundColor }}>
       {loading ? (
         <div className={classes.loadScreen}>
           <RingLoader size={500} color="lightgreen" speedMultiplier={0.5} />
@@ -196,18 +233,26 @@ function App() {
           <div className={classes.settingButtonContainer}>
             <button className={classes.settingButton} onClick={openSettings}>
               setting
-              <FontAwesomeIcon 
+              <FontAwesomeIcon
                 icon={faGear}
                 spinPulse
                 style={{
                   color: "rgb(32, 182, 132)",
-                  marginLeft: '7px',
-                }} 
+                  marginLeft: "7px",
+                }}
                 size="2xl"
               />
             </button>
           </div>
-          {isSettingsOpen && <SettingsPage onClose={closeSettings} />}
+          {isSettingsOpen && (
+            <SettingsPage
+              onClose={closeSettings}
+              darkMode={darkMode}
+              handleDarkModeToggle={handleDarkModeToggle}
+              backgroundColor={backgroundColor}
+              handleColorChange={handleColorChange}
+            />
+          )}
           <div className={classes.gridContainer}>
             <div className={classes.countdownBox}>
               <Countdown />
@@ -222,55 +267,42 @@ function App() {
   );
 }
 
-function SettingsPage({ onClose }) {
+function SettingsPage({ onClose, darkMode, handleDarkModeToggle, backgroundColor, handleColorChange }) {
   const classes = useStyles();
-  const [darkMode, setDarkMode] = useState(false);
-
-  const handleDarkModeToggle = () => {
-    setDarkMode(!darkMode);
-    // Add code to handle dark mode change
-    if (!darkMode) {
-      // Switching to dark mode
-      document.body.style.backgroundColor = "black";
-      document.body.style.color = "white";
-    } else {
-      // Switching to light mode
-      document.body.style.backgroundColor = "aliceblue";
-      document.body.style.color = "black";
-    }
-  };
-  useEffect(() => {
-    const appElement = document.querySelector("." + classes.app);
-    if (appElement) {
-      if (darkMode) {
-        appElement.classList.add(classes.appDarkMode);
-      } else {
-        appElement.classList.remove(classes.appDarkMode);
-      }
-    }
-  }, [darkMode, classes.app, classes.appDarkMode]);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   return (
     <div className={classes.settingContainer}>
       <div className={classes.settingTheme}>
         <h1 className={classes.settingType}>Theme</h1>
-        <p className={classes.darkMode}>
-          dark mode
-          <ToggleButton
+        <div className={classes.darkMode}>
+          <div className={classes.darkModeText}>
+            dark mode (PLEASE WAIT 3s BEFORE CLICKING AGAIN)
+          </div>
+          <div className={classes.darkModeToggleWrapper}>
+            <DayNightToggle
+              className={classes.darkModeToggle}
+              checked={isDarkMode}
+              onClick={handleDarkModeToggle}
+              onChange={() => setIsDarkMode(!isDarkMode)}
+            />
+          </div>
+          {/* <ToggleButton
+            className={classes.darkModeToggle}
             type="checkbox"
             variant={darkMode ? "light" : "dark"}
-            style={{ 
-              marginLeft: "35px",
+            style={{
+              marginLeft: "20vw",
             }}
             onClick={handleDarkModeToggle}
-            //checked={darkMode}
-            //onChange={handleDarkModeToggle}
           >
             {darkMode ? "switch to light mode" : "switch to dark mode"}
-          </ToggleButton>
+          </ToggleButton> */}
+        </div>
+        <p>
+          change background color
+          <ChromePicker color={backgroundColor} onChange={handleColorChange} />
         </p>
-        <p>dark mode when running</p>
-        <p>change background color</p>
         <p>change font</p>
       </div>
       <div className={classes.settingSFX}>
@@ -282,14 +314,14 @@ function SettingsPage({ onClose }) {
       <div className={classes.settingCloseButtonContainer}>
         <button className={classes.settingCloseButton} onClick={onClose}>
           close
-          <FontAwesomeIcon 
-            icon={faCircleXmark} 
+          <FontAwesomeIcon
+            icon={faCircleXmark}
             size="xl"
             beat
             style={{
               color: "rgb(32, 182, 132)",
-              marginLeft: '7px',
-            }} 
+              marginLeft: "7px",
+            }}
           />
         </button>
       </div>
