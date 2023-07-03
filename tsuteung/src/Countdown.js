@@ -227,6 +227,107 @@ const useStyles = createUseStyles({
           transform: "scale(1)",
         },
     },
+    timePresetContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        marginBottom: "2vw",
+    },
+    timePresetButton: {
+        background: "lightpurple",
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'relative',
+        textDecoration: 'none',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '130px',
+        fontFamily: "Poppins, monospace",
+        height: '60px',
+        cursor: 'pointer',
+        border: '3px solid cornflowerblue',
+        borderRadius: '5px',
+        transition: 'all 0.3s ease-in-out',
+        margin: '0 20px', // Gap between buttons
+        color: 'cornflowerblue',
+        fontSize: "15px",
+        zIndex: 10,
+
+        '&:hover, &:focus': {
+            color: '#002244',
+            fontWeight: "bolder",
+            opacity: 1,
+            transform: "scale(1.05)",
+
+            '&:before': {
+                width: '100%',
+                backgroundColor: '#B0C4DE',
+            },
+
+            '& button': {
+                border: '1px solid #ffe045',
+                opacity: 1,
+                '&:before': {
+                    width: 0,
+                },
+            },
+        },
+
+        '&:before': {
+            content: '""',
+            display: 'block',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: 0,
+            height: '100%',
+            backgroundColor: 'violet',
+            zIndex: -1,
+            transition: 'all 0.7s ease-in-out',
+        },
+
+        '& button': {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '50px',
+            marginTop: '-8px',
+            marginLeft: '-5px',
+            textAlign: 'center',
+            fontSize: '16px',
+            outline: 'none',
+            borderRadius: 0,
+            opacity: 1,
+            transition: 'all 0.7s ease-in-out',
+            cursor: 'pointer',
+            color: '#000',
+            zIndex: 2,
+
+            '&:hover, &:focus': {
+                color: '#000',
+                backgroundColor: '#ffe045',
+            },
+
+            '&:before': {
+                content: '""',
+                display: 'block',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '50px',
+                backgroundColor: '#fff',
+                zIndex: 0,
+                transition: 'all 0.7s ease-in-out',
+            },
+
+            '& span': {
+                position: 'relative',
+                zIndex: 3,
+                color: '#000',
+            },
+        },
+    },
 });
 
 function Countdown(props) {
@@ -345,47 +446,69 @@ function Countdown(props) {
     return (
         <div className={classes.container}>
             {showInputs && (
-                <div className={classes.inputFieldContainer}>
-                    <div className={classes.inputField}>
-                        <input
-                            type="number"
-                            name="hours"
-                            value={countdownTime.hours.toString().padStart(2, '0')}
-                            className={classes.inputFieldInput}
-                            onChange={handleInputChange}
-                            onClick={handleInputClick}
-                            placeholder="hr"
-                            min="0"
-                            max="100"
-                        />
+                <div>
+                    <div className={classes.timePresetContainer}>
+                        <button 
+                            className={classes.timePresetButton} 
+                            onClick={() => setCountdownTime({ hours: 0, minutes: 50, seconds: 0 })}
+                        >
+                            pomodoro
+                        </button>
+                        <button 
+                            className={classes.timePresetButton}
+                            onClick={() => setCountdownTime({ hours: 0, minutes: 10, seconds: 0 })}
+                        >
+                            break time
+                        </button>
+                        <button 
+                            className={classes.timePresetButton}
+                            onClick={() => setCountdownTime({ hours: 0, minutes: 15, seconds: 0 })}
+                        >
+                            meditate
+                        </button>
                     </div>
-                    <p className={classes.timeSeparator}>:</p>
-                    <div className={classes.inputField}>
-                        <input
-                            type="number"
-                            name="minutes"
-                            value={countdownTime.minutes.toString().padStart(2, '0')}
-                            className={classes.inputFieldInput}
-                            onChange={handleInputChange}
-                            onClick={handleInputClick}
-                            placeholder="min"
-                            min="0"
-                            max="59"
-                        />
-                    </div>
-                    <p className={classes.timeSeparator}>:</p>
-                    <div className={classes.inputField}>
-                        <input
-                            type="number"
-                            name="seconds"
-                            value={countdownTime.seconds.toString().padStart(2, '0')}
-                            className={classes.inputFieldInput}
-                            onClick={handleInputClick}
-                            onChange={handleInputChange}
-                            placeholder="sec"
-                            min="0"
-                            max="59"
-                        />
+                    <div className={classes.inputFieldContainer}>
+                        <div className={classes.inputField}>
+                            <input
+                                type="number"
+                                name="hours"
+                                value={countdownTime.hours.toString().padStart(2, '0')}
+                                className={classes.inputFieldInput}
+                                onChange={handleInputChange}
+                                onClick={handleInputClick}
+                                placeholder="hr"
+                                min="0"
+                                max="100"
+                            />
+                        </div>
+                        <p className={classes.timeSeparator}>:</p>
+                        <div className={classes.inputField}>
+                            <input
+                                type="number"
+                                name="minutes"
+                                value={countdownTime.minutes.toString().padStart(2, '0')}
+                                className={classes.inputFieldInput}
+                                onChange={handleInputChange}
+                                onClick={handleInputClick}
+                                placeholder="min"
+                                min="0"
+                                max="59"
+                            />
+                        </div>
+                        <p className={classes.timeSeparator}>:</p>
+                        <div className={classes.inputField}>
+                            <input
+                                type="number"
+                                name="seconds"
+                                value={countdownTime.seconds.toString().padStart(2, '0')}
+                                className={classes.inputFieldInput}
+                                onClick={handleInputClick}
+                                onChange={handleInputChange}
+                                placeholder="sec"
+                                min="0"
+                                max="59"
+                            />
+                        </div>
                     </div>
                 </div>
             )}
