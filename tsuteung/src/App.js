@@ -150,7 +150,7 @@ const useStyles = createUseStyles({
   settingTheme: {
     textAlign: "left",
     marginBottom: "3vw",
-    paddingTop: "45rem",
+    paddingTop: "55rem",
   },
   settingSFX: {
     textAlign: "left",
@@ -276,6 +276,10 @@ const useStyles = createUseStyles({
     display: "flex",
     alignItems: "center",
   },
+  timerPresetTypeContainer: {
+    marginBottom: "1vw",
+    marginTop: "2vw",
+  },
 });
 
 function App() {
@@ -286,7 +290,7 @@ function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState("");
   const [isSoundEnabled, setIsSoundEnabled] = useState(false);
-  const [isAlarmEnabled, setIsAlarmEnabled] = useState(false);
+  const [isAlarmEnabled, setIsAlarmEnabled] = useState(true);
   const [volume, setVolume] = useState(0.3); // Initial volume value is 1 (max volume)
 
   const handleSoundToggle = () => {
@@ -502,17 +506,17 @@ function SettingsPage({ onClose, handleDarkModeToggle, backgroundColor, handleCo
       </div>
       <div className={classes.settingPreset}>
         <h1 className={classes.settingType}>Timer Presets</h1>
-        <div className={classes.pomodoro}>
+        <div className={classes.timerPresetTypeContainer}>
           <div className={classes.pomodoroText}>
             pomodoro (default) 50 minutes
           </div>
         </div>
-        <div className={classes.break}>
+        <div className={classes.timerPresetTypeContainer}>
           <div className={classes.breakText}>
             break time (default) 10 minutes
           </div>
         </div>
-        <div className={classes.meditate}>
+        <div className={classes.timerPresetTypeContainer}>
           <div className={classes.meditateText}>
             meditate (default) 15 minutes
           </div>
