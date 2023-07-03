@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { createUseStyles } from 'react-jss';
 import Spritesheet from "react-responsive-spritesheet";
 import ButtonClickSound from "./sound/buttonSound2.mp3";
@@ -24,6 +24,7 @@ const useStyles = createUseStyles({
         paddingLeft: "1rem",
     },
     timerButton: {
+        background: "lightyellow",
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
@@ -38,7 +39,7 @@ const useStyles = createUseStyles({
         borderRadius: '5px',
         transition: 'all 0.7s ease-in-out',
         margin: '0 50px', // Gap between buttons
-        color: 'white',
+        color: 'rgb(32, 182, 132)',
         fontSize: "25px",
         zIndex: 10,
 
@@ -238,12 +239,13 @@ function Countdown(props) {
 
     const [timerActive, setTimerActive] = useState(false);
     const [showInputs, setShowInputs] = useState(true);
-    const { isSoundEnabled, isAlarmEnabled } = props;
+    const { isSoundEnabled, isAlarmEnabled, volume } = props;
 
-    const playAlertSound = () => {
+    const playAlertSound = useCallback(() => {
         const alert = new Audio(AlertSound);
+        alert.volume = volume;
         alert.play();
-    };
+    }, [volume]);
 
     useEffect(() => {
         let interval = null;
@@ -272,7 +274,7 @@ function Countdown(props) {
         }, 1000);
         }
         return () => clearInterval(interval);
-    }, [timerActive, isAlarmEnabled]);
+    }, [timerActive, isAlarmEnabled, playAlertSound]);
 
     const [currentCheerIndex, setCurrentCheerIndex] = useState(0);
 
@@ -290,6 +292,7 @@ function Countdown(props) {
     const startCountdown = () => {
         if (isSoundEnabled) {
             const audio = new Audio(ButtonClickSound);
+            audio.volume = volume;
             audio.play();
         }
         setTimerActive(true);
@@ -299,6 +302,7 @@ function Countdown(props) {
     const stopCountdown = () => {
         if (isSoundEnabled) {
             const audio = new Audio(ButtonClickSound);
+            audio.volume = volume;
             audio.play();
         }
         setTimerActive(false);
@@ -308,6 +312,7 @@ function Countdown(props) {
     const resetCountdown = () => {
         if (isSoundEnabled) {
             const audio = new Audio(ButtonClickSound);
+            audio.volume = volume;
             audio.play();
         }
         setCountdownTime({ hours: 0, minutes: 0, seconds: 0 });

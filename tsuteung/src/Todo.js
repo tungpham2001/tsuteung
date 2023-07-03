@@ -17,12 +17,13 @@ function Todo(props) {
 
   const audio = new Audio(ButtonClickSound);
 
-  const { isSoundEnabled } = props;
+  const { isSoundEnabled, volume } = props;
 
   // Add task 
   ////////////////////////////////////////// 
   const addTask = () => {
     if (isSoundEnabled) {
+      audio.volume = volume;
       audio.play();
     }
     if(newTask) {
@@ -37,6 +38,7 @@ function Todo(props) {
   ////////////////////////////////////////// 
   const deleteTask = (id) => {
     if (isSoundEnabled) {
+      audio.volume = volume;
       audio.play();
     }
     let newTasks = toDo.filter((task) => task.id !== id);
@@ -47,6 +49,7 @@ function Todo(props) {
   ////////////////////////////////////////// 
   const markDone = (id) => {
     if (isSoundEnabled) {
+      audio.volume = volume;
       audio.play();
     }
     const newTasks = toDo.map((task) => {
@@ -62,6 +65,7 @@ function Todo(props) {
   ////////////////////////////////////////// 
   const cancelUpdate = () => {
     if (isSoundEnabled) {
+      audio.volume = volume;
       audio.play();
     }
     setUpdateData('');
@@ -71,6 +75,7 @@ function Todo(props) {
   ////////////////////////////////////////// 
   const changeTask = (e) => {
     if (isSoundEnabled) {
+      audio.volume = volume;
       audio.play();
     }
     let newEntry = {
@@ -85,6 +90,7 @@ function Todo(props) {
   ////////////////////////////////////////// 
   const updateTask = () => {
     if (isSoundEnabled) {
+      audio.volume = volume;
       audio.play();
     }
     let filterRecords = [...toDo].filter( task=>task.id !== updateData.id);
@@ -176,6 +182,7 @@ function Todo(props) {
                     // onClick={ () => {setUpdateData({ id: task.id, title: task.title, satus: task.status ? true : false }) }}
                     onClick={() => {
                       if (isSoundEnabled) {
+                        audio.volume = volume;
                         audio.play();
                       }
                       setUpdateData({

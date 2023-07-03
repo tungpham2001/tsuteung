@@ -113,9 +113,9 @@ const useStyles = createUseStyles({
   },
   scrollable: {
     overflow: 'auto',
-    height: '30vw', // Adjust the height as per your requirements
+    height: '30vw',
     "&::-webkit-scrollbar": {
-      width: "10px", // Adjust the width of the scrollbar
+      width: "10px",
     },
     "&::-webkit-scrollbar-track": {
       overflow: "fit",
@@ -124,8 +124,8 @@ const useStyles = createUseStyles({
       marginBottom: "0.5rem",
     },
     "&::-webkit-scrollbar-thumb": {
-      background: "aliceblue", // Change the color of the scrollbar thumb
-      borderRadius: "4px", // Adjust the border radius of the scrollbar thumb
+      background: "aliceblue",
+      borderRadius: "4px",
     },
   },
   settingButtonContainer: {
@@ -150,7 +150,7 @@ const useStyles = createUseStyles({
   settingTheme: {
     textAlign: "left",
     marginBottom: "5vw",
-    paddingTop: "20rem",
+    paddingTop: "35rem",
   },
   settingSFX: {
     textAlign: "left",
@@ -159,6 +159,7 @@ const useStyles = createUseStyles({
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center",
+    marginTop: "3vw",
   },
   settingCloseButton: {
     padding: "0.6rem",
@@ -173,7 +174,7 @@ const useStyles = createUseStyles({
       transform: "scale(1.2)",
       background: "#EEDC82",
     },
-    marginRight: "0.5vw",
+    marginTop: "1vw",
   },
   settingType: {
     color: "lightgoldenrodyellow",
@@ -245,11 +246,35 @@ const useStyles = createUseStyles({
     alignItems: "center",
   },
   alarmText: {
-    marginRight: "12.1vw",
+    marginRight: "12.2vw",
+  },
+  alarmToggle: {
+    marginTop: "1rem",
+    marginBottom: "2rem",
+    padding: "0.6rem",
+    borderRadius: "10px",
+    border: "3px solid rgb(32, 182, 132)",
+    fontSize: "1rem",
+    lineHeight: "1.5",
   },
   alarmToggleWrapper: {
-    marginLeft: "12.1vw",
+    marginLeft: "12.2vw",
     marginTop: "1vw",
+  },
+  volume: {
+    display: "flex",
+    alignItems: "center",
+    marginTop: "3vw",
+  },
+  volumeText: {
+    marginRight: "9.2vw",
+  },
+  volumeSliderWrapper: {
+    marginLeft: "9.2vw",
+  },
+  volumeSlider: {
+    display: "flex",
+    alignItems: "center",
   },
 });
 
@@ -260,11 +285,18 @@ function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState("");
-  const [isSoundEnabled, setIsSoundEnabled] = useState(true);
-  const [isAlarmEnabled, setIsAlarmEnabled] = useState(true);
+  const [isSoundEnabled, setIsSoundEnabled] = useState(false);
+  const [isAlarmEnabled, setIsAlarmEnabled] = useState(false);
+  const [volume, setVolume] = useState(0.3); // Initial volume value is 1 (max volume)
 
   const handleSoundToggle = () => {
     setIsSoundEnabled(!isSoundEnabled);
+  };
+
+  const handleVolumeChange = (event) => {
+    const newVolume = parseFloat(event.target.value);
+    setVolume(newVolume);
+    audio.volume = newVolume;
   };
 
   const handleAlarmToggle = () => {
@@ -347,21 +379,30 @@ function App() {
             <SettingsPage
               onClose={closeSettings}
               darkMode={darkMode}
-              handleDarkModeToggle={handleDarkModeToggle}
               backgroundColor={backgroundColor}
+              volume={volume}
+              handleDarkModeToggle={handleDarkModeToggle}
               handleColorChange={handleColorChange}
               handleSoundToggle={handleSoundToggle}
               handleAlarmToggle={handleAlarmToggle}
+              handleVolumeChange={handleVolumeChange}
               isSoundEnabled={isSoundEnabled}
               isAlarmEnabled={isAlarmEnabled}
             />
           )}
           <div className={classes.gridContainer}>
             <div className={classes.countdownBox}>
-              <Countdown isSoundEnabled={isSoundEnabled} isAlarmEnabled={isAlarmEnabled}/>
+              <Countdown 
+                isSoundEnabled={isSoundEnabled} 
+                isAlarmEnabled={isAlarmEnabled}
+                volume={volume}
+              />
             </div>
             <div className={classes.todoBox}>
-              <Todo isSoundEnabled={isSoundEnabled}/>
+              <Todo 
+                isSoundEnabled={isSoundEnabled}
+                volume={volume}
+              />
             </div>
           </div>
         </div>
@@ -370,7 +411,7 @@ function App() {
   );
 }
 
-function SettingsPage({ onClose, handleDarkModeToggle, backgroundColor, handleColorChange, handleSoundToggle, isSoundEnabled, isAlarmEnabled, handleAlarmToggle }) {
+function SettingsPage({ onClose, handleDarkModeToggle, backgroundColor, handleColorChange, handleSoundToggle, isSoundEnabled, isAlarmEnabled, handleAlarmToggle, volume, handleVolumeChange }) {
   const classes = useStyles();
   const [isDarkMode, setIsDarkMode] = useState(false);
 
@@ -422,7 +463,7 @@ function SettingsPage({ onClose, handleDarkModeToggle, backgroundColor, handleCo
           </div>
           <div className={classes.alarmToggleWrapper}>
             <button 
-              className={`${classes.sfxToggle} ${isAlarmEnabled ? classes.disableSound : classes.enableSound}`}
+              className={`${classes.alarmToggle} ${isAlarmEnabled ? classes.disableSound : classes.enableSound}`}
               onClick={handleAlarmToggle}
             >
               {isAlarmEnabled ? 'enabled' : 'disabled'}
@@ -442,7 +483,22 @@ function SettingsPage({ onClose, handleDarkModeToggle, backgroundColor, handleCo
             </button>
           </div>
         </div>
-        <p>background music during countdown</p>
+        <div className={classes.volume}>
+          <div className={classes.volumeText}>
+            sfx and volume slider
+          </div>
+          <div className={classes.volumeSliderWrapper}>
+            <input
+              className={classes.volumeSlider}
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={volume}
+              onChange={handleVolumeChange}
+            />
+          </div>
+        </div>
       </div>
       <div className={classes.settingCloseButtonContainer}>
         <button className={classes.settingCloseButton} onClick={onClose}>
