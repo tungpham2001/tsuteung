@@ -149,8 +149,8 @@ const useStyles = createUseStyles({
   },
   settingTheme: {
     textAlign: "left",
-    marginBottom: "5vw",
-    paddingTop: "35rem",
+    marginBottom: "3vw",
+    paddingTop: "45rem",
   },
   settingSFX: {
     textAlign: "left",
@@ -178,6 +178,7 @@ const useStyles = createUseStyles({
   },
   settingType: {
     color: "lightgoldenrodyellow",
+    marginTop: "3vw",
   },
   darkModeToggle: {
     marginTop: "1rem",
@@ -204,7 +205,6 @@ const useStyles = createUseStyles({
   },
   toggleBackgroundColorWrapper: {
     marginLeft: "5vw",
-    marginTop: "1vw",
   },
   sfx: {
     display: "flex",
@@ -232,7 +232,6 @@ const useStyles = createUseStyles({
     "&:hover": {
       background: "darkgreen",
     },
-    
   },
   enableSound: {
     backgroundColor: 'black',
@@ -265,6 +264,7 @@ const useStyles = createUseStyles({
     display: "flex",
     alignItems: "center",
     marginTop: "3vw",
+    marginBottom: "3vw",
   },
   volumeText: {
     marginRight: "9.2vw",
@@ -497,6 +497,24 @@ function SettingsPage({ onClose, handleDarkModeToggle, backgroundColor, handleCo
               value={volume}
               onChange={handleVolumeChange}
             />
+          </div>
+        </div>
+      </div>
+      <div className={classes.settingPreset}>
+        <h1 className={classes.settingType}>Timer Presets</h1>
+        <div className={classes.pomodoro}>
+          <div className={classes.pomodoroText}>
+            pomodoro (default) 50 minutes
+          </div>
+        </div>
+        <div className={classes.break}>
+          <div className={classes.breakText}>
+            break time (default) 10 minutes
+          </div>
+        </div>
+        <div className={classes.meditate}>
+          <div className={classes.meditateText}>
+            meditate (default) 15 minutes
           </div>
         </div>
       </div>
